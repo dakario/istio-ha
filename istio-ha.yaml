@@ -135,7 +135,7 @@ spec:
       certManager:
         enabled: false
       nodeAgent:
-        enabled: false
+        enabled: true
 
   # Config management feature
   configManagement:
@@ -225,7 +225,7 @@ spec:
               maxUnavailable: "25%"
   # Istio CNI feature
   cni:
-    enabled: false
+    enabled: true
 
   # Global values passed through to helm global.yaml.
   values:
@@ -319,7 +319,7 @@ spec:
         datadog:
           address: "$(HOST_IP):8126"
       mtls:
-        enabled: false
+        enabled: true
         auto: false
       imagePullSecrets: []
       arch:
@@ -348,8 +348,9 @@ spec:
       outboundTrafficPolicy:
         mode: ALLOW_ANY
       sds:
-        enabled: false
-        udsPath: ""
+        enabled: true
+        udsPath: "unix:/var/run/sds/uds_path"
+        useNormalJwt: true
         token:
           aud: istio-ca
       meshNetworks: {}
@@ -474,6 +475,13 @@ spec:
 
     nodeagent:
       image: node-agent-k8s
+      env:
+        CA_PROVIDER: "Citadel"
+        CA_ADDR: "istio-citadel:8060"
+        VALID_TOKEN: true
+        SECRET_GRACE_DURATION: "10m"
+        SECRET_JOB_RUN_INTERVAL: "30s"
+        SECRET_TTL: "20m"
 
     gateways:
       istio-egressgateway:
@@ -510,7 +518,7 @@ spec:
           enabled: true
           suffix: global
         sds:
-          enabled: false
+          enabled: true
           image: node-agent-k8s
           resources:
             requests:
@@ -574,7 +582,7 @@ spec:
         autoInject: true
 
     prometheus:
-      enabled: true
+      enabled: false
       replicaCount: 1
       hub: docker.io/prom
       tag: v2.12.0
@@ -705,7 +713,7 @@ spec:
       coreDNSPluginImage: istio/coredns-plugin:0.2-istio-1.1
 
     kiali:
-      enabled: false
+      enabled: true
       replicaCount: 1
       hub: quay.io/kiali
       tag: v1.9
@@ -714,7 +722,7 @@ spec:
       podAntiAffinityLabelSelector: []
       podAntiAffinityTermLabelSelector: []
       ingress:
-        enabled: false
+        enabled: true
         hosts:
           - kiali.local
         annotations:
@@ -729,7 +737,7 @@ spec:
       prometheusNamespace:
       createDemoSecret: false
       security:
-        enabled: false
+        enabled: true
         cert_file: /kiali-cert/cert-chain.pem
         private_key_file: /kiali-cert/key.pem
 
