@@ -145,6 +145,9 @@ spec:
         enabled: true
         k8s:
           replicaCount: 1
+          hpaSpec:
+            maxReplicas: 5
+            minReplicas: 1
           resources:
             requests:
               cpu: 100m
