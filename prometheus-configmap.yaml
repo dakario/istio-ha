@@ -19,8 +19,9 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - {{ .Release.Namespace }}
+          - istio-system
 
+      scrape_interval: 15s
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
         action: keep
@@ -32,6 +33,7 @@ data:
       kubernetes_sd_configs:
       - role: pod
 
+      scrape_interval: 15s
       relabel_configs:
       - source_labels: [__meta_kubernetes_pod_container_port_name]
         action: keep
@@ -55,9 +57,10 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - {{ .Release.Namespace }}
+          - istio-system
 
 
+      scrape_interval: 15s
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
         action: keep
@@ -68,8 +71,9 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - {{ .Release.Namespace }}
+          - istio-system
 
+      scrape_interval: 15s
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
         action: keep
@@ -80,8 +84,9 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - {{ .Release.Namespace }}
+          - istio-system
 
+      scrape_interval: 15s
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
         action: keep
@@ -92,8 +97,9 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - {{ .Release.Namespace }}
+          - istio-system
 
+      scrape_interval: 15s
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
         action: keep
@@ -104,8 +110,9 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - {{ .Release.Namespace }}
+          - istio-system
 
+      scrape_interval: 15s
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
         action: keep
@@ -122,6 +129,7 @@ data:
       tls_config:
         ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      scrape_interval: 15s
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
         action: keep
@@ -135,6 +143,7 @@ data:
       bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
       kubernetes_sd_configs:
       - role: node
+      scrape_interval: 15s
       relabel_configs:
       - action: labelmap
         regex: __meta_kubernetes_node_label_(.+)
@@ -166,6 +175,7 @@ data:
       bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
       kubernetes_sd_configs:
       - role: node
+      scrape_interval: 15s
       relabel_configs:
       - action: labelmap
         regex: __meta_kubernetes_node_label_(.+)
@@ -180,6 +190,7 @@ data:
     - job_name: 'kubernetes-service-endpoints'
       kubernetes_sd_configs:
       - role: endpoints
+      scrape_interval: 15s
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
         action: keep
@@ -209,6 +220,7 @@ data:
     - job_name: 'kubernetes-pods'
       kubernetes_sd_configs:
       - role: pod
+      scrape_interval: 15s
       relabel_configs:  # If first two labels are present, pod should be scraped  by the istio-secure job.
       - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
         action: keep
@@ -241,12 +253,13 @@ data:
     - job_name: 'kubernetes-pods-istio-secure'
       scheme: https
       tls_config:
-        ca_file: /etc/istio-certs/root-cert.pem
-        cert_file: /etc/istio-certs/cert-chain.pem
-        key_file: /etc/istio-certs/key.pem
+        ca_file: /etc/prometheus/secrets/istio.default/root-cert.pem
+        cert_file: /etc/prometheus/secrets/istio.default/cert-chain.pem
+        key_file: /etc/prometheus/secrets/istio.default/key.pem
         insecure_skip_verify: true  # prometheus does not support secure naming.
       kubernetes_sd_configs:
       - role: pod
+      scrape_interval: 15s
       relabel_configs:
       - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
         action: keep
