@@ -128,6 +128,22 @@ spec:
       citadel:
         enabled: true
         k8s:
+          hpaSpec:
+            maxReplicas: 5
+            minReplicas: 1
+            scaleTargetRef:
+              apiVersion: apps/v1
+              kind: Deployment
+              name: istio-citadel
+            metrics:
+              - type: Resource
+                resource:
+                  name: cpu
+                  targetAverageUtilization: 80
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
           strategy:
             rollingUpdate:
               maxSurge: "100%"
@@ -148,9 +164,19 @@ spec:
           hpaSpec:
             maxReplicas: 3
             minReplicas: 1
+            scaleTargetRef:
+              apiVersion: apps/v1
+              kind: Deployment
+              name: istio-galley
+            metrics:
+              - type: Resource
+                resource:
+                  name: cpu
+                  targetAverageUtilization: 80
           resources:
             requests:
               cpu: 100m
+              memory: 128Mi
           strategy:
             rollingUpdate:
               maxSurge: "100%"
@@ -201,7 +227,7 @@ spec:
               maxUnavailable: "25%"
 
       egressGateway:
-        enabled: false
+        enabled: true
         k8s:
           hpaSpec:
             maxReplicas: 5
@@ -228,7 +254,7 @@ spec:
               maxUnavailable: "25%"
   # Istio CNI feature
   cni:
-    enabled: true
+    enabled: false
 
   # Global values passed through to helm global.yaml.
   values:
@@ -362,9 +388,9 @@ spec:
       enableHelmTest: false
     pilot:
       autoscaleEnabled: true
-      autoscaleMin: 1
+      autoscaleMin: 2
       autoscaleMax: 5
-      replicaCount: 1
+      replicaCount: 2
       image: pilot
       traceSampling: 1.0
       configNamespace: istio-config
