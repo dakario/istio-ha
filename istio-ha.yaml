@@ -235,7 +235,7 @@ spec:
               maxUnavailable: "25%"
 
       egressGateway:
-        enabled: true
+        enabled: false
         k8s:
           hpaSpec:
             maxReplicas: 5
