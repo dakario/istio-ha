@@ -1,2 +1,2 @@
 # istio-ha
-A high available configuration for a production installation of istio
+A set of config files to install  a high available istio control plane and prometheus custom metrics.
