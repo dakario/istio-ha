@@ -549,6 +549,13 @@ spec:
 
     nodeagent:
       image: node-agent-k8s
+      env:
+        CA_PROVIDER: "Citadel"
+        CA_ADDR: "istio-citadel:8060"
+        VALID_TOKEN: true
+        SECRET_GRACE_DURATION: "10m"
+        SECRET_JOB_RUN_INTERVAL: "30s"
+        SECRET_TTL: "20m"
 
     gateways:
       istio-egressgateway:
