@@ -329,7 +329,7 @@ spec:
             cpu: 2000m
             memory: 1024Mi
         concurrency: 2
-        accessLogFile: ""
+        accessLogFile: "/dev/stdout"
         accessLogFormat: ""
         accessLogEncoding: TEXT
         envoyAccessLogService:
@@ -451,7 +451,7 @@ spec:
       autoscaleMax: 5
       replicaCount: 2
       image: pilot
-      traceSampling: 1.0
+      traceSampling: 50.0
       configNamespace: istio-config
       appNamespaces: []
       env: {}
